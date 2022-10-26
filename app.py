@@ -27,7 +27,7 @@ class Article(db.Model):
     id =  db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(100), nullable=False, unique=True)
     content = db.Column(db.String, nullable=False)
-    date_created = db.Column(db.Datetime, default=datetime.utcnow())
+    date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
     def __repr__(self):
         return f"Article <{self.title}>"
