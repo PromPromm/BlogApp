@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 import os
 from datetime import datetime
@@ -55,7 +55,7 @@ def login():
 # register page
 @app.route('/register')
 def signup():
-    return 'signup'
+    return render_template('register.html')
 
 # logout page
 @app.route('/logout')
