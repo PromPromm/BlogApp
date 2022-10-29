@@ -1,6 +1,7 @@
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import current_user, login_user, UserMixin, LoginManager, logout_user, login_required
 import os
 from datetime import datetime
 
@@ -12,8 +13,13 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['SECRET_KEY'] = 'b10c5e66032f14ac9208be5d'
 
 db = SQLAlchemy(app)
+login_manager = LoginManager(app) 
 
-class User(db.Model):
+@login_manager.user_loader # NOTE
+def user_loaderr(id):
+    return User.query.get(int(id))
+
+class User(db.Model, UserMixin):
     __table_name__ = "users"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     first_name = db.Column(db.String(50), nullable=False)
@@ -25,7 +31,7 @@ class User(db.Model):
     def __repr__(self):
         return f"User <{self.username}>"
 
-class Article(db.Model):
+class Article(db.Model, UserMixin):
     __table_name__ = "articles"
     id =  db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(100), nullable=False, unique=True)
@@ -51,9 +57,16 @@ def contact():
     return 'contact'
 
 # login page
-@app.route('/login')
+@app.route('/login', methods=["GET", "POST"])
 def login():
-    return 'login'
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        user_exist = User.query.filter_by(email=email).first()
+        if user_exist and check_password_hash(user_exist.password_hash, password):
+            login_user(user_exist)
+            return redirect(url_for('home'))
+        return render_template('login.html')
 
 # register page
 @app.route('/register', methods=["GET", "POST"])
