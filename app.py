@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from werkzeug.security import generate_password_hash
+from flask import Flask, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 import os
 from datetime import datetime
@@ -13,6 +14,7 @@ app.config['SECRET_KEY'] = 'b10c5e66032f14ac9208be5d'
 db = SQLAlchemy(app)
 
 class User(db.Model):
+    __table_name__ = "users"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=True)
@@ -24,6 +26,7 @@ class User(db.Model):
         return f"User <{self.username}>"
 
 class Article(db.Model):
+    __table_name__ = "articles"
     id =  db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(100), nullable=False, unique=True)
     content = db.Column(db.String, nullable=False)
@@ -53,8 +56,28 @@ def login():
     return 'login'
 
 # register page
-@app.route('/register')
+@app.route('/register', methods=["GET", "POST"])
 def signup():
+    if request.method == "POST":
+        first_name = request.form.get('firstname')
+        last_name = request.form.get('lastname')
+        email = request.form.get('email')
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        existing_email = User.query.filter_by(email=email).first()
+        if existing_email:
+            return redirect(url_for('login'))
+
+        existing_username = User.query.filter_by(username=username).first()
+        if existing_username:
+            return redirect(url_for('login'))
+
+        new_user = User(first_name=first_name, last_name=last_name, username=username, email=email, password_hash=generate_password_hash(password))
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('login'))
+
     return render_template('register.html')
 
 # logout page
