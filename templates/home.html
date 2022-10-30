@@ -1,0 +1,61 @@
+{% extends 'base.html' %} {% block head %}
+<style>
+  .content-section {
+    background: #ffffff;
+    padding: 10px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin-bottom: 20px;
+  }
+  .article-metadata {
+    padding-bottom: 1px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #e3e3e3;
+  }
+
+  .article-metadata a:hover {
+    color: #333;
+    text-decoration: none;
+  }
+  .article-title {
+    color: #444444;
+  }
+
+  a.article-title:hover {
+    color: #428bca;
+    text-decoration: none;
+  }
+  .article-content {
+    white-space: pre-line;
+  }
+  .create-article-button {
+    padding: 10px;
+    display: block;
+    margin: 10px auto;
+    border-radius: 10px;
+    width: 150px;
+  }
+</style>
+{% endblock %} {% block heading %}
+<script
+  src="https://kit.fontawesome.com/f0f88b9eef.js"
+  crossorigin="anonymous"
+></script>
+{% endblock %} {% block content %} {% if current_user.is_authenticated %}
+<div>
+  <button class="create-article-button">
+    Create <i class="fa-solid fa-pencil"></i>
+  </button>
+</div>
+{% endif %}
+<article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+      <a class="mr-2" href="#">username</a>
+      <small class="text-muted">email</small>
+    </div>
+    <h2><a class="article-title" href="#">lastname</a></h2>
+    <p class="article-content">firstname</p>
+  </div>
+</article>
+{% endblock %}

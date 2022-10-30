@@ -44,7 +44,8 @@ class Article(db.Model, UserMixin):
 # home page
 @app.route('/')
 def home():
-    return 'home'
+    user = User.query.all()
+    return render_template('home.html')
 
 # about page
 @app.route('/about')
