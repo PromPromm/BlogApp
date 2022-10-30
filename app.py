@@ -15,8 +15,8 @@ app.config['SECRET_KEY'] = 'b10c5e66032f14ac9208be5d'
 db = SQLAlchemy(app)
 login_manager = LoginManager(app) 
 
-@login_manager.user_loader # NOTE
-def user_loaderr(id):
+@login_manager.user_loader
+def user_loader(id):
     return User.query.get(int(id))
 
 class User(db.Model, UserMixin):
@@ -95,8 +95,10 @@ def signup():
 
 # logout page
 @app.route('/logout')
+@login_required
 def logout():
-    return 'logout'
+    logout_user()
+    return redirect(url_for('home'))
 
 # Individual blog post - /<name_of_blog>
 @app.route('/<name_of_blog>')
