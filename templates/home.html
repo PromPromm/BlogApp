@@ -44,18 +44,20 @@
 {% endblock %} {% block content %} {% if current_user.is_authenticated %}
 <div>
   <button class="create-article-button">
-    Create <i class="fa-solid fa-pencil"></i>
+    <a href="{{url_for('create')}}"
+      >Create <i class="fa-solid fa-pencil"></i
+    ></a>
   </button>
 </div>
-{% endif %}
+{% endif %} {% for article in articles %}
 <article class="media content-section">
   <div class="media-body">
     <div class="article-metadata">
-      <a class="mr-2" href="#">username</a>
-      <small class="text-muted">email</small>
+      <span class="mr-3">{{article.author}}</span>
+      <small class="text-muted">{{article.date_created}}</small>
     </div>
-    <h2><a class="article-title" href="#">lastname</a></h2>
-    <p class="article-content">firstname</p>
+    <h2><a class="article-title" href="#">{{article.title}}</a></h2>
+    <p class="article-content">{{article.content}}</p>
   </div>
 </article>
-{% endblock %}
+{% endfor %} {% endblock %}

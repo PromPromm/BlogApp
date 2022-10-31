@@ -1,5 +1,5 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, flash, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import current_user, login_user, UserMixin, LoginManager, logout_user, login_required
 import os
@@ -36,6 +36,7 @@ class Article(db.Model, UserMixin):
     id =  db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(100), nullable=False, unique=True)
     content = db.Column(db.String, nullable=False)
+    author = db.Column(db.String(), nullable=False)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
     def __repr__(self):
@@ -44,8 +45,8 @@ class Article(db.Model, UserMixin):
 # home page
 @app.route('/')
 def home():
-    user = User.query.all()
-    return render_template('home.html')
+    articles = Article.query.all()
+    return render_template('home.html', articles=articles )
 
 # about page
 @app.route('/about')
@@ -90,7 +91,7 @@ def signup():
         new_user = User(first_name=first_name, last_name=last_name, username=username, email=email, password_hash=generate_password_hash(password))
         db.session.add(new_user)
         db.session.commit()
-        return redirect(url_for('login'))
+        return redirect(url_for('home'))
 
     return render_template('register.html')
 
@@ -107,9 +108,26 @@ def single_blog(name_of_blog):
     return 'blog'
 
 # create
-@app.route('/create')
+@app.route('/create', methods=['POST', 'GET'])
+@login_required
 def create():
-    return 'create'
+    logged_in_user_id = current_user.get_id() # returns a string so it has to be converted to an integer
+    int_of_id = int(logged_in_user_id)
+    current_user_object = User.query.filter_by(id=int_of_id).first() # querying the db for the current user details
+    if request.method == 'POST':
+        title = request.form.get('title')
+        content = request.form.get('content')
+        author = current_user_object.username # gets the username of the logged in user
+
+        title_exists = Article.query.filter_by(title=title).first()
+        if title_exists:
+            flash('Title is taken')
+        new_article = Article(title=title, content=content, author=author)
+        db.session.add(new_article)
+        db.session.commit()
+        return 'The route for this article should be here'
+
+    return render_template('create.html')
 
 # /<name_of_blog>/edit
 @app.route('/<name_of_blog>/edit')
