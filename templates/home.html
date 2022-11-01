@@ -56,7 +56,13 @@
       <span class="mr-3">{{article.author}}</span>
       <small class="text-muted">{{article.date_created}}</small>
     </div>
-    <h2><a class="article-title" href="#">{{article.title}}</a></h2>
+    <h2>
+      <a
+        class="article-title"
+        href="{{url_for('single_blog', name_of_blog=article.title)}}"
+        >{{article.title}}</a
+      >
+    </h2>
     <p class="article-content">{{article.content}}</p>
   </div>
 </article>

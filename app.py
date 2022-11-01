@@ -103,9 +103,12 @@ def logout():
     return redirect(url_for('home'))
 
 # Individual blog post - /<name_of_blog>
-@app.route('/<name_of_blog>')
+@app.route('/article/<name_of_blog>')
 def single_blog(name_of_blog):
-    return 'blog'
+    article = Article.query.filter_by(title=name_of_blog).first()
+    if article:
+        return render_template('singleblog.html', article=article)
+    return 'There is no such article. Not found'
 
 # create
 @app.route('/create', methods=['POST', 'GET'])
