@@ -31,7 +31,7 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"User <{self.username}>"
 
-class Article(db.Model, UserMixin):
+class Article(db.Model):
     __table_name__ = "articles"
     id =  db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(100), nullable=False, unique=True)
@@ -105,16 +105,13 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-# Individual blog post - /<name_of_blog>
-@app.route('/article/<name_of_blog>')
-def single_blog(name_of_blog):
-    article = Article.query.filter_by(title=name_of_blog).first()
-    if article:
-        author = article.author
-        user = User.query.filter_by(username=author).first()
-        user_id = str(user.id)
-        return render_template('singleblog.html', article=article, user_id=user_id)
-    return 'There is no such article. Not found'
+# Individual blog post - /<id_of_blog>
+@app.route('/article/<int:_id>')
+def single_blog(_id):
+    article = Article.query.filter_by(id=_id).first_or_404('Such article does not exist')
+    user = User.query.filter_by(username=article.author).first()
+    user_id = str(user.id)
+    return render_template('singleblog.html', article=article, user_id=user_id, user=user)
 
 # create
 @app.route('/create', methods=['POST', 'GET'])
@@ -128,38 +125,32 @@ def create():
         content = request.form.get('content')
         author = current_user_object.username # gets the username of the logged in user
 
-        title_exists = Article.query.filter_by(title=title).first()
-        if title_exists:
-            flash('Title is taken')
         new_article = Article(title=title, content=content, author=author)
         db.session.add(new_article)
         db.session.commit()
-        return redirect(url_for('single_blog', name_of_blog=title))
+        return redirect(url_for('single_blog', _id=new_article.id))
 
     return render_template('create.html')
 
 # /<name_of_blog>/edit
-@app.route('/article/<name_of_blog>/edit', methods=['POST', 'GET'])
+@app.route('/article/<int:_id>/edit', methods=['POST', 'GET'])
 @login_required
-def edit(name_of_blog):
-    article = Article.query.filter_by(title=name_of_blog).first()
+def edit(_id):
+    article = Article.query.filter_by(id=_id).first()
     if request.method == 'POST':
-        if article:
-            article.content = request.form.get('content')
-            db.session.commit()
-            return redirect(url_for('single_blog', name_of_blog=name_of_blog))
+        article.content = request.form.get('content')
+        db.session.commit()
+        return redirect(url_for('single_blog', _id=_id))
     return render_template('edit.html', article=article)
 
 # /<name_of_blog>/delete
-@app.route('/article/<name_of_blog>/delete')
+@app.route('/article/<int:_id>/delete')
 @login_required
-def delete(name_of_blog):
-    article = Article.query.filter_by(title=name_of_blog).first()
-    if article:
-        db.session.delete(article)
-        db.session.commit()
-        return redirect(url_for('home'))
-    return 'Article does not exist'
+def delete(_id):
+    article = Article.query.filter_by(id=_id).first()
+    db.session.delete(article)
+    db.session.commit()
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug=True)

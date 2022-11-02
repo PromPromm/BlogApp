@@ -59,9 +59,7 @@
       >
     </div>
     <h2>
-      <a
-        class="article-title"
-        href="{{url_for('single_blog', name_of_blog=article.title)}}"
+      <a class="article-title" href="{{url_for('single_blog', _id=article.id)}}"
         >{{article.title}}</a
       >
     </h2>

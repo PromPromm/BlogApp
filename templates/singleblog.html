@@ -1,13 +1,13 @@
 {% extends 'base.html' %} {% block head %} {% endblock %} {% block heading %}
 <h1>{{article.title}}</h1>
-<h5>{{article.author}}</h5>
+<h5>{{user.first_name}} {{user.last_name}}</h5>
 {% endblock %} {% block content %}
 <article>{{article.content}}</article>
 {% if current_user.is_authenticated and (current_user.get_id() == user_id) %}
 <button>
-  <a href="{{url_for('edit', name_of_blog=article.title )}}">Edit</a>
+  <a href="{{url_for('edit', _id=article.id )}}">Edit</a>
 </button>
 <button>
-  <a href="{{url_for('delete', name_of_blog=article.title )}}">Delete</a>
+  <a href="{{url_for('delete', _id=article.id )}}">Delete</a>
 </button>
 {% endif %} {% endblock %}
