@@ -107,7 +107,10 @@ def logout():
 def single_blog(name_of_blog):
     article = Article.query.filter_by(title=name_of_blog).first()
     if article:
-        return render_template('singleblog.html', article=article)
+        author = article.author
+        user = User.query.filter_by(username=author).first()
+        user_id = str(user.id)
+        return render_template('singleblog.html', article=article, user_id=user_id)
     return 'There is no such article. Not found'
 
 # create
@@ -128,11 +131,21 @@ def create():
         new_article = Article(title=title, content=content, author=author)
         db.session.add(new_article)
         db.session.commit()
-        return 'The route for this article should be here'
+        return redirect(url_for('single_blog', name_of_blog=title))
 
     return render_template('create.html')
 
 # /<name_of_blog>/edit
-@app.route('/<name_of_blog>/edit')
+@app.route('/article/<name_of_blog>/edit', methods=['POST', 'GET'])
+@login_required
 def edit(name_of_blog):
-    return 'edit'
+    article = Article.query.filter_by(title=name_of_blog).first()
+    if request.method == 'POST':
+        if article:
+            article.content = request.form.get('content')
+            db.session.commit()
+            return redirect(url_for('single_blog', name_of_blog=name_of_blog))
+    return render_template('edit.html', article=article)
+
+if __name__ == '__main__':
+    app.run(debug=True)
