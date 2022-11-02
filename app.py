@@ -139,6 +139,7 @@ def edit(_id):
     article = Article.query.filter_by(id=_id).first()
     if request.method == 'POST':
         article.content = request.form.get('content')
+        article.title = request.form.get('title')
         db.session.commit()
         return redirect(url_for('single_blog', _id=_id))
     return render_template('edit.html', article=article)
