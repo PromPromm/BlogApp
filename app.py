@@ -79,6 +79,7 @@ def signup():
         email = request.form.get('email')
         username = request.form.get('username')
         password = request.form.get('password')
+        confirm_password = request.form.get('confirmpassword')
 
         existing_email = User.query.filter_by(email=email).first()
         if existing_email:
@@ -87,7 +88,9 @@ def signup():
         existing_username = User.query.filter_by(username=username).first()
         if existing_username:
             return redirect(url_for('login'))
-
+        if confirm_password != password:
+            flash('Password is not equal to confirm password')
+            return redirect(url_for('signup'))
         new_user = User(first_name=first_name, last_name=last_name, username=username, email=email, password_hash=generate_password_hash(password))
         db.session.add(new_user)
         db.session.commit()

@@ -54,7 +54,9 @@
   <div class="media-body">
     <div class="article-metadata">
       <span class="mr-3">{{article.author}}</span>
-      <small class="text-muted">{{article.date_created}}</small>
+      <small class="text-muted"
+        >{{article.date_created.strftime('%H:%M:%S')}}</small
+      >
     </div>
     <h2>
       <a
