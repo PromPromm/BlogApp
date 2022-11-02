@@ -147,5 +147,16 @@ def edit(name_of_blog):
             return redirect(url_for('single_blog', name_of_blog=name_of_blog))
     return render_template('edit.html', article=article)
 
+# /<name_of_blog>/delete
+@app.route('/article/<name_of_blog>/delete')
+@login_required
+def delete(name_of_blog):
+    article = Article.query.filter_by(title=name_of_blog).first()
+    if article:
+        db.session.delete(article)
+        db.session.commit()
+        return redirect(url_for('home'))
+    return 'Article does not exist'
+
 if __name__ == '__main__':
     app.run(debug=True)

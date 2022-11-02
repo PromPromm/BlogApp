@@ -7,4 +7,7 @@
 <button>
   <a href="{{url_for('edit', name_of_blog=article.title )}}">Edit</a>
 </button>
+<button>
+  <a href="{{url_for('delete', name_of_blog=article.title )}}">Delete</a>
+</button>
 {% endif %} {% endblock %}
