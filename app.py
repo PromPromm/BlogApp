@@ -89,13 +89,11 @@ def signup():
         if existing_username:
             return redirect(url_for('login'))
         if confirm_password != password:
-            flash('Password is not equal to confirm password')
             return redirect(url_for('signup'))
         new_user = User(first_name=first_name, last_name=last_name, username=username, email=email, password_hash=generate_password_hash(password))
         db.session.add(new_user)
         db.session.commit()
-        return redirect(url_for('home'))
-
+        return redirect(url_for('login'))
     return render_template('register.html')
 
 # logout page
