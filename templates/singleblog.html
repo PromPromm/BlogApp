@@ -1,13 +1,33 @@
-{% extends 'base.html' %} {% block head %} {% endblock %} {% block heading %}
-<h1>{{article.title}}</h1>
-<h5>{{user.first_name}} {{user.last_name}}</h5>
-{% endblock %} {% block content %}
-<article>{{article.content}}</article>
-{% if current_user.is_authenticated and (current_user.get_id() == user_id) %}
-<button>
-  <a href="{{url_for('edit', _id=article.id )}}">Edit</a>
-</button>
-<button>
-  <a href="{{url_for('delete', _id=article.id )}}">Delete</a>
-</button>
+{% extends 'base.html' %} {% block head %}
+<style>
+  .base-container {
+    margin: 80px;
+    margin-top: 20px;
+  }
+  .crud-button a {
+    text-decoration: none;
+    color: white;
+  }
+  .crud-button {
+    margin-top: 20px;
+  }
+</style>
+{% endblock %} {% block heading %}
+<div class="base-container">
+  <h1>{{article.title}}</h1>
+  <h5>By {{user.first_name}} {{user.last_name}}</h5>
+  <small
+    >{{article.date_created.strftime('%H:%M:%S')}},
+    {{article.date_created.strftime('%A %d %B %Y')}}</small
+  >
+  {% endblock %} {% block content %}
+  <article>{{article.content}}</article>
+  {% if current_user.is_authenticated and (current_user.get_id() == user_id) %}
+  <button type="button" class="btn btn-primary crud-button">
+    <a href="{{url_for('edit', _id=article.id )}}">Edit</a>
+  </button>
+  <button type="button" class="btn btn-danger crud-button">
+    <a href="{{url_for('delete', _id=article.id )}}">Delete</a>
+  </button>
+</div>
 {% endif %} {% endblock %}

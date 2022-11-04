@@ -74,7 +74,7 @@ def contact():
         feedback = Feedback(email=email, name=name, message=message)
         db.session.add(feedback)
         db.session.commit()
-        return 'Message successfully sent'
+        return 'Message successfully sent' #NOTE flash message
     return render_template('contact.html')
 
 # login page

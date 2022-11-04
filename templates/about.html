@@ -1,57 +1,69 @@
-{% extends 'base.html'%} {% block head %} {% endblock %} {% block heading %}
-<h3>Hi, {{user.first_name}}</h3>
-<small>Start <a href="{{url_for('create')}}">writing</a></small>
+{% extends 'base.html'%} {% block head %}
+<style>
+  .base-container {
+    margin: 80px;
+    margin-top: 20px;
+  }
+  h3 {
+    text-align: center;
+    margin: 10px 0;
+  }
+</style>
+{% endblock %} {% block heading %}
+<h3>Hi, {{user.first_name}} {{user.last_name}}</h3>
 {% endblock %} {% block content %}
-<div class="mb-3 row">
-  <label for="staticEmail" class="col-sm-2 col-form-label">First Name:</label>
-  <div class="col-sm-10">
-    <input
-      class="form-control col-md-8"
-      type="text"
-      value="{{user.first_name}}"
-      aria-label="Disabled input example"
-      disabled
-      readonly
-    />
+<div class="base-container">
+  <div class="mb-3 row">
+    <label for="staticEmail" class="col-sm-2 col-form-label">First Name:</label>
+    <div class="col-sm-10">
+      <input
+        class="form-control col-md-8"
+        type="text"
+        value="{{user.first_name}}"
+        aria-label="Disabled input example"
+        disabled
+        readonly
+      />
+    </div>
   </div>
-</div>
-<div class="mb-3 row">
-  <label for="staticEmail" class="col-sm-2 col-form-label">Last Name:</label>
-  <div class="col-sm-10">
-    <input
-      class="form-control col-md-8"
-      type="text"
-      value="{{user.last_name}}"
-      aria-label="Disabled input example"
-      disabled
-      readonly
-    />
+  <div class="mb-3 row">
+    <label for="staticEmail" class="col-sm-2 col-form-label">Last Name:</label>
+    <div class="col-sm-10">
+      <input
+        class="form-control col-md-8"
+        type="text"
+        value="{{user.last_name}}"
+        aria-label="Disabled input example"
+        disabled
+        readonly
+      />
+    </div>
   </div>
-</div>
-<div class="mb-3 row">
-  <label for="staticEmail" class="col-sm-2 col-form-label">Email:</label>
-  <div class="col-sm-10">
-    <input
-      class="form-control col-md-8"
-      type="text"
-      value="{{user.email}}"
-      aria-label="Disabled input example"
-      disabled
-      readonly
-    />
+  <div class="mb-3 row">
+    <label for="staticEmail" class="col-sm-2 col-form-label">Email:</label>
+    <div class="col-sm-10">
+      <input
+        class="form-control col-md-8"
+        type="text"
+        value="{{user.email}}"
+        aria-label="Disabled input example"
+        disabled
+        readonly
+      />
+    </div>
   </div>
-</div>
-<div class="mb-3 row">
-  <label for="staticEmail" class="col-sm-2 col-form-label">Username:</label>
-  <div class="col-sm-10">
-    <input
-      class="form-control col-md-8"
-      type="text"
-      value="{{user.username}}"
-      aria-label="Disabled input example"
-      disabled
-      readonly
-    />
+  <div class="mb-3 row">
+    <label for="staticEmail" class="col-sm-2 col-form-label">Username:</label>
+    <div class="col-sm-10">
+      <input
+        class="form-control col-md-8"
+        type="text"
+        value="{{user.username}}"
+        aria-label="Disabled input example"
+        disabled
+        readonly
+      />
+    </div>
   </div>
 </div>
 

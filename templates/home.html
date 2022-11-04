@@ -6,6 +6,7 @@
     border: 1px solid #dddddd;
     border-radius: 3px;
     margin-bottom: 20px;
+    margin: 10px 20px;
   }
   .article-metadata {
     padding-bottom: 1px;
@@ -25,45 +26,31 @@
     color: #428bca;
     text-decoration: none;
   }
-  .article-content {
-    white-space: pre-line;
-  }
-  .create-article-button {
-    padding: 10px;
-    display: block;
-    margin: 10px auto;
-    border-radius: 10px;
-    width: 150px;
-  }
 </style>
 {% endblock %} {% block heading %}
 <script
   src="https://kit.fontawesome.com/f0f88b9eef.js"
   crossorigin="anonymous"
 ></script>
-{% endblock %} {% block content %} {% if current_user.is_authenticated %}
-<div>
-  <button class="create-article-button">
-    <a href="{{url_for('create')}}"
-      >Create <i class="fa-solid fa-pencil"></i
-    ></a>
-  </button>
-</div>
-{% endif %} {% for article in articles %}
+{% endblock %} {% block content %} {% for article in articles %}
 <article class="media content-section">
   <div class="media-body">
     <div class="article-metadata">
-      <span class="mr-3">{{article.author}}</span>
-      <small class="text-muted"
-        >{{article.date_created.strftime('%H:%M:%S')}}</small
-      >
+      <h2>
+        <a
+          class="article-title"
+          href="{{url_for('single_blog', _id=article.id)}}"
+          >{{article.title}}</a
+        >
+      </h2>
     </div>
-    <h2>
-      <a class="article-title" href="{{url_for('single_blog', _id=article.id)}}"
-        >{{article.title}}</a
+
+    <p class="article-content">
+      {{article.author}}
+      <span class="mr-3"
+        ><small>{{article.date_created.strftime('%H:%M:%S')}}</small></span
       >
-    </h2>
-    <p class="article-content">{{article.content}}</p>
+    </p>
   </div>
 </article>
 {% endfor %} {% endblock %}
