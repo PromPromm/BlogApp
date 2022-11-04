@@ -34,7 +34,7 @@ class User(db.Model, UserMixin):
 class Article(db.Model):
     __table_name__ = "articles"
     id =  db.Column(db.Integer, primary_key=True, autoincrement=True)
-    title = db.Column(db.String(100), nullable=False, unique=True)
+    title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.String, nullable=False)
     author = db.Column(db.String(), nullable=False)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
@@ -50,8 +50,11 @@ def home():
 
 # about page
 @app.route('/about')
+@login_required
 def about():
-    return 'about'
+    _id = current_user.get_id()
+    user = User.query.filter_by(id=_id).first()
+    return render_template('about.html', user=user)
 
 # contact page
 @app.route('/contact')
