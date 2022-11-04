@@ -42,6 +42,13 @@ class Article(db.Model):
     def __repr__(self):
         return f"Article <{self.title}>"
 
+class Feedback(db.Model):
+    __table_name__ = 'feedback'
+    id =  db.Column(db.Integer, primary_key=True, autoincrement=True)
+    email = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), nullable=False)
+    message = db.Column(db.String(250), nullable=False)
+
 # home page
 @app.route('/')
 def home():
@@ -57,9 +64,18 @@ def about():
     return render_template('about.html', user=user)
 
 # contact page
-@app.route('/contact')
+@app.route('/contact', methods=['POST', 'GET'])
 def contact():
-    return 'contact'
+    if request.method == 'POST':
+        email = request.form.get('email')
+        name = request.form.get('name')
+        message = request.form.get('message')
+
+        feedback = Feedback(email=email, name=name, message=message)
+        db.session.add(feedback)
+        db.session.commit()
+        return 'Message successfully sent'
+    return render_template('contact.html')
 
 # login page
 @app.route('/login', methods=["GET", "POST"])

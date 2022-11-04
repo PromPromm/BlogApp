@@ -1,0 +1,94 @@
+{% extends 'base.html'%} {% block head %}
+<style>
+  .base-container {
+    margin: 80px;
+    margin-top: 20px;
+  }
+  h3 {
+    text-align: center;
+    margin: 10px 0;
+  }
+  p {
+    text-align: center;
+    margin: 10px auto;
+  }
+  i {
+    font-size: 20px;
+  }
+</style>
+<script
+  src="https://kit.fontawesome.com/f0f88b9eef.js"
+  crossorigin="anonymous"
+></script>
+{% endblock %} {% block heading %}
+<h3>CONTACT ME</h3>
+{% endblock %} {% block content %}
+<div class="base-container">
+  <article>
+    BlogHub is an app developed my Promise Falaye, a student of Altschool
+    Africa. This app allows users to post their thoughts, views, activities,
+    tutorials and so on. It is flexible enough for users considering the fact
+    that it app was built with the sole purpose of allowing users perform basic
+    operations on a blogging webiste like create, delete and edit their blogs.
+    You have to be logged in before you can create, edit or delete a blog. Sign
+    up using the register link in the navigation bar and log in with the login
+    link too. Happy blogging!😊
+  </article>
+  <br />
+  <br />
+  <p>
+    <strong>
+      For feedback, complaints, improvements and suggestion. Fill the form
+      below:</strong
+    >
+  </p>
+  <form action="{{url_for('contact')}}" method="post">
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label"
+        >Email address</label
+      >
+      <input
+        type="email"
+        name="email"
+        class="form-control"
+        id="exampleFormControlInput1"
+        placeholder="name@example.com"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">Name</label>
+      <input
+        type="text"
+        name="name"
+        class="form-control"
+        id="exampleFormControlInput1"
+        placeholder="Your name"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlTextarea1" class="form-label"
+        >Message</label
+      >
+      <textarea
+        class="form-control"
+        id="exampleFormControlTextarea1"
+        name="message"
+        rows="5"
+      ></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Send Message</button>
+  </form>
+  <p>
+    <a href="https://github.com/PromPromm" target="_blank"
+      ><i class="fa-brands fa-twitter"></i
+    ></a>
+    <a href="https://twitter.com/the_promzy" target="_blank"
+      ><i class="fa-brands fa-github"></i
+    ></a>
+    <a href="https://www.linkedin.com/in/PromiseAnuoluwa"
+      ><i class="fa-brands fa-linkedin"></i
+    ></a>
+  </p>
+</div>
+
+{% endblock %}
