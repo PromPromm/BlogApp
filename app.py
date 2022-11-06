@@ -74,7 +74,8 @@ def contact():
         feedback = Feedback(email=email, name=name, message=message)
         db.session.add(feedback)
         db.session.commit()
-        return 'Message successfully sent' #NOTE flash message
+        flash(f'Submitted, thank you {name}', 'success')
+        return redirect(url_for('home'))
     return render_template('contact.html')
 
 # login page
@@ -86,6 +87,7 @@ def login():
         user_exist = User.query.filter_by(email=email).first()
         if user_exist and check_password_hash(user_exist.password_hash, password):
             login_user(user_exist)
+            flash(f'Log in successful, {user_exist.first_name}', 'success')
             return redirect(url_for('home'))
         return render_template('login.html')
 
@@ -102,16 +104,20 @@ def signup():
 
         existing_email = User.query.filter_by(email=email).first()
         if existing_email:
-            return redirect(url_for('login'))
+            flash('An account has been created with this email', 'danger')
+            return render_template('register.html')
 
         existing_username = User.query.filter_by(username=username).first()
         if existing_username:
+            flash('Username is taken', 'info')
             return redirect(url_for('login'))
         if confirm_password != password:
+            flash('Password is not equal to confirm password', 'info')
             return redirect(url_for('signup'))
         new_user = User(first_name=first_name, last_name=last_name, username=username, email=email, password_hash=generate_password_hash(password))
         db.session.add(new_user)
         db.session.commit()
+        flash(f'Account successfully created, {first_name}', 'success')
         return redirect(url_for('login'))
     return render_template('register.html')
 

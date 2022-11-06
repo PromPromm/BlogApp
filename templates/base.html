@@ -30,6 +30,9 @@
       .bg {
         background: #863d48;
       }
+      .alert {
+        margin-top: 10px;
+      }
     </style>
     <link
       rel="stylesheet"
@@ -108,6 +111,12 @@
         </div>
       </div>
     </nav>
+    <div class="col-md-12">
+      {% with messages = get_flashed_messages(with_categories=True) %} {% if
+      messages %} {% for category, message in messages %}
+      <div class="alert alert-{{category}}">{{message}}</div>
+      {% endfor %} {% endif %} {% endwith %}
+    </div>
     {% block heading %} {% endblock %} {% block content %} {% endblock %}
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
