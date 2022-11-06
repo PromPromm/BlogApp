@@ -12,6 +12,20 @@
     text-align: center;
     margin-bottom: 30px;
   }
+  .btn-primary {
+    background-color: #b72a3f;
+    border-color: #c27c86;
+  }
+  .btn-primary:hover {
+    background-color: #c27c86;
+    border-color: #c0394e;
+  }
+  .redirect-link {
+    color: #b72a3f;
+  }
+  .redirect-link:hover {
+    color: #b72a3f;
+  }
 </style>
 {% endblock %} {% block heading %}
 <h1>Welcome Back</h1>
@@ -41,7 +55,8 @@
     <button type="submit" class="btn btn-primary">Login</button>
   </form>
   <small
-    >Don't have an account? <a href="{{url_for('signup')}}">Signup</a></small
+    >Don't have an account?
+    <a href="{{url_for('signup')}}" class="redirect-link">Signup</a></small
   >
 </div>
 {% endblock %}
