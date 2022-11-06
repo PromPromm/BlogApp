@@ -1,5 +1,5 @@
 # BlogApp
-A simple and basic blogging web app made with flask.
+A simple and basic blogging web app built with flask and python.
 # To run
 #### Install the dependencies required
 ```
